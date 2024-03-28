@@ -1,5 +1,6 @@
 package com.example.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -57,21 +58,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // 스위치가 ON 상태일 때
-                    switch1.setTrackResource(R.drawable.switchonbar);
-                } else {
-                    // 스위치가 OFF 상태일 때
-                    switch1.setTrackResource(R.drawable.switchoffbar);
-                }
-            }
-        });
 
         imageButton1.setOnClickListener(onClickListener);
-        imageButton2.setOnClickListener(onClickListener);
+
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 스위치가 켜져 있는지 확인
+                if (switch1.isChecked()) {
+                    // imageButton2 위에 있는 textView2의 텍스트 가져오기
+                    String text = textView2.getText().toString();
+                    // 텍스트를 음성으로 출력
+                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+                }
+
+                // 회원가입 액티비티로 이동
+                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // 스위치 상태 변화 감지
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
